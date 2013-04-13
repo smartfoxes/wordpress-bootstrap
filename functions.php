@@ -63,6 +63,7 @@ you like. Enjoy!
 /************* ACTIVE SIDEBARS ********************/
 
 // Sidebars & Widgetizes Areas
+if(!function_exists("bones_register_sidebars")) {
 function bones_register_sidebars() {
     register_sidebar(array(
     	'id' => 'sidebar1',
@@ -129,7 +130,7 @@ function bones_register_sidebars() {
     
     */
 } // don't remove this bracket!
-
+}
 /************* COMMENT LAYOUT *********************/
 		
 // Comment Layout
@@ -372,18 +373,21 @@ function add_class_attachment_link($html){
 add_filter('wp_get_attachment_link','add_class_attachment_link',10,1);
 
 // Add lead class to first paragraph
-function first_paragraph($content){
-    global $post;
-
-    // if we're on the homepage, don't add the lead class to the first paragraph of text
-    if( is_page_template( 'page-homepage.php' ) )
-        return $content;
-    else
-        return preg_replace('/<p([^>]+)?>/', '<p$1 class="lead">', $content, 1);
+if(!function_exists("first_paragraph")) {
+    function first_paragraph($content){
+        global $post;
+    
+        // if we're on the homepage, don't add the lead class to the first paragraph of text
+        if( is_page_template( 'page-homepage.php' ) )
+            return $content;
+        else
+            return preg_replace('/<p([^>]+)?>/', '<p$1 class="lead">', $content, 1);
+    }
 }
 add_filter('the_content', 'first_paragraph');
 
 // Menu output mods
+if(!class_exists("description_walker")) {
 class description_walker extends Walker_Nav_Menu
 {
       function start_el(&$output, $item, $depth, $args)
@@ -444,7 +448,7 @@ class description_walker extends Walker_Nav_Menu
       	        return parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
       	    }        
 }
-
+}
 add_editor_style('editor-style.css');
 
 // Add Twitter Bootstrap's standard 'active' class name to the active nav link item
